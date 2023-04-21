@@ -4548,6 +4548,7 @@ function atributo_damage:MontaInfoDamageDone() --I guess this fills the list of 
 					spellTables = {spellTable}, --sub spell tables to show if the spell is expanded
 					petNames = {""},
 				}
+				detailsFramework:Mixin(bkSpellData, Details.SpellTableMixin)
 
 				breakdownSpellDataList[#breakdownSpellDataList+1] = bkSpellData
 				alreadyAdded[spellName] = #breakdownSpellDataList
@@ -4592,6 +4593,8 @@ function atributo_damage:MontaInfoDamageDone() --I guess this fills the list of 
 							spellTables = {spellTable},
 							petNames = {petName},
 						}
+						detailsFramework:Mixin(bkSpellData, Details.SpellTableMixin)
+
 						breakdownSpellDataList[#breakdownSpellDataList+1] = bkSpellData
 						alreadyAdded[spellName] = #breakdownSpellDataList
 					end
@@ -4605,7 +4608,7 @@ function atributo_damage:MontaInfoDamageDone() --I guess this fills the list of 
 	for i = 1, #breakdownSpellDataList do
 		---@type breakdownspelldata
 		local bkSpellData = breakdownSpellDataList[i]
-		Details:SumSpellTables(bkSpellData.spellTables, bkSpellData)
+		Details.SpellTableMixin.SumSpellTables(bkSpellData.spellTables, bkSpellData)
 	end
 
 	breakdownSpellDataList.totalValue = actorTotal
