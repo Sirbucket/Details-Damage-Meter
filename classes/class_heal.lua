@@ -1895,14 +1895,14 @@ function atributo_heal:MontaInfoHealingDone()
 			---@type number in which index the spell with the same name was stored
 			local index = alreadyAdded[spellName]
 			if (index) then
-				---@type breakdownspelldata
+				---@type spelltableadv
 				local bkSpellData = actorSpellsSorted[index]
 				bkSpellData.spellIds[#bkSpellData.spellIds+1] = spellId
 				bkSpellData.spellTables[#bkSpellData.spellTables+1] = spellTable
 				bkSpellData.petNames[#bkSpellData.petNames+1] = ""
 				bkSpellData.bCanExpand = true
 			else
-				---@type breakdownspelldata
+				---@type spelltableadv
 				local bkSpellData = {
 					id = spellId,
 					spellschool = spellTable.spellschool,
@@ -1913,6 +1913,7 @@ function atributo_heal:MontaInfoHealingDone()
 					spellTables = {spellTable}, --sub spell tables to show if the spell is expanded
 					petNames = {""},
 				}
+				detailsFramework:Mixin(bkSpellData, Details.SpellTableMixin)
 
 				actorSpellsSorted[#actorSpellsSorted+1] = bkSpellData
 				alreadyAdded[spellName] = #actorSpellsSorted
@@ -1939,14 +1940,14 @@ function atributo_heal:MontaInfoHealingDone()
 					---@type number in which index the spell with the same name was stored
 					local index = alreadyAdded[spellName]
 					if (index) then --PET
-						---@type breakdownspelldata
+						---@type spelltableadv
 						local bkSpellData = actorSpellsSorted[index]
 						bkSpellData.spellIds[#bkSpellData.spellIds+1] = spellId
 						bkSpellData.spellTables[#bkSpellData.spellTables+1] = spellTable
 						bkSpellData.petNames[#bkSpellData.petNames+1] = petName
 						bkSpellData.bCanExpand = true
 					else --PET
-						---@type breakdownspelldata
+						---@type spelltableadv
 						local bkSpellData = {
 							id = spellId,
 							spellschool = spellTable.spellschool,
@@ -1957,6 +1958,8 @@ function atributo_heal:MontaInfoHealingDone()
 							spellTables = {spellTable},
 							petNames = {petName},
 						}
+						detailsFramework:Mixin(bkSpellData, Details.SpellTableMixin)
+
 						actorSpellsSorted[#actorSpellsSorted+1] = bkSpellData
 						alreadyAdded[spellName] = #actorSpellsSorted
 					end
@@ -1966,7 +1969,7 @@ function atributo_heal:MontaInfoHealingDone()
 	end
 
 	for i = 1, #actorSpellsSorted do
-		---@type breakdownspelldata
+		---@type spelltableadv
 		local bkSpellData = actorSpellsSorted[i]
 		Details.SpellTableMixin.SumSpellTables(bkSpellData.spellTables, bkSpellData)
 	end
